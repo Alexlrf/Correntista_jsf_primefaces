@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <title>Correntista JSF</title>
+        <h:outputStylesheet name="./css/cssLayout.css"  />
+        <h:outputStylesheet library="css" name="default.css"  />
+        <h:outputStylesheet library="css" name="primeflex.min.css"  />
+        <link rel="shortcut icon" href="resources\imagem\cifrao.png" />
+    </h:head>
+    <h:body>       
+
+        <div class="p-grid">
+            <div id="top" class="p-col-12">
+                <header class="aw-topbar" style="margin-bottom: 5px;">
+                    <h:graphicImage library="imagem" name="logo.png" />
+                    <a href="#" class="aw-toggle  js-toggle"><i class="fa  fa-bars"></i></a>
+                </header>
+            </div>
+
+            <div id="left" class="p-col-2">
+                <h:form id="menu">
+                    <p:menu style="width:200px">
+                        <p:menuitem value="Home" outcome="layout" icon="pi pi-home"/>
+                        <p:submenu label="Cadastro">
+                            <p:menuitem value="Profissão" outcome="profissao" icon="pi pi-save"/>
+                            <p:menuitem value="Pessoa Física" outcome="pessoa_fisica"  icon="pi pi-save"/>
+                            <p:menuitem value="Pessoa Jurídica" outcome="pessoa_juridica" icon="pi pi-save"/>
+                            <p:menuitem value="Usuário" outcome="usuario" icon="pi pi-save"/>
+                            <p:menuitem value="Perfil" outcome="perfil" icon="pi pi-save"/>
+                        </p:submenu>
+                        <p:submenu label="Relatório">
+                            <p:menuitem value="Física" icon="pi pi-external-link"/>
+                            <p:menuitem value="Jurídica" icon="pi pi-upload"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </div>
+
+            <div id="content" class="p-col-10 left_content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <div class="p-text-center">
+                        <h:graphicImage library="imagem" name="loader.gif"  />
+                    </div>
+                </p:dialog>
+
+                <ui:insert name="content"> 
+
+                    <h:form id="form">                        
+
+                        <h1 style="font-size: 1.5rem; text-align: center;">Conversões</h1>
+                        <br></br>
+                        <p:dataTable id="tabela" var="moeda" value="#{moedaC.moedas}" rows="10">
+                            <p:column headerText="Moeda">
+                                <h:outputText value="#{moeda.nome}" />
+                            </p:column>
+                            <p:column headerText="Valor Atual">
+                                <h:outputText value="#{moeda.valorFinal}" />
+                            </p:column>   
+                            <p:column headerText="Valor Mínimo">
+                                <h:outputText value="#{moeda.valorMinimo}" />
+                            </p:column>   
+                            <p:column headerText="Valor Máximo">
+                                <h:outputText value="#{moeda.valorMaximo}" />
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                    <style type="text/css">
+                        .ui-chart {
+                            margin-bottom: 50px;
+                        }
+                    </style>
+
+                    <div class="card">
+                        <p:lineChart model="#{graficoBarra.lineModel}" style="width: 100%; height: 500px;"/>
+                    </div>
+
+                </ui:insert>
+            </div>
+        </div>
+
+    </h:body>
+</html>
+

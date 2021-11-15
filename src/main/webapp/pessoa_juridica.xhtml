@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./layout.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <ui:define name="content">
+
+        <p:panel id="painel_conteudo" header="Pessoa Jurídica" >
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
+            <p:tabView id="tab_view" activeIndex="#{pJuridicaC.aba}">
+                <p:ajax event="tabChange" listener="#{pJuridicaC.onTabChange}" />
+                <p:ajax event="tabClose" listener="#{pJuridicaC.onTabClose}" />
+                <p:tab title="Pesquisa">
+                    <h:form id="form_pesquisa">
+                        <p:panelGrid columns="3" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2"
+                                     contentStyleClass="ui-fluid">
+                            <p:outputLabel for="pessoa" value="Nome:" />
+                            <p:inputText id="pessoa" value="#{pJuridicaC.pessoaJuridica.nome}" required="true" 
+                                         requiredMessage="Nome é obrigatório" />
+                            <p:commandButton value="Pesquisar" update="tabela pessoa" 
+                                             action="#{pJuridicaC.pesquisarPorNome()}" />
+                        </p:panelGrid>
+
+                        <p:dataTable id="tabela" var="pessoa" value="#{pJuridicaC.modelJuridicos}" rows="10"
+                                     paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,15,{ShowAll|'Todos'}">
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{pessoa.nome}" />
+                            </p:column>
+                            <p:column headerText="CNPJ">
+                                <h:outputText value="#{pessoa.cnpj}" />
+                            </p:column>   
+                            <p:column headerText="E-mail">
+                                <h:outputText value="#{pessoa.email}" />
+                            </p:column>   
+
+
+                            <p:column headerText="Ação">
+                                <p:commandButton icon="pi pi-pencil" title="Alterar" process="@this" 
+                                                 actionListener="#{pJuridicaC.prepararAlterar}" update="@all"
+                                                 style="margin-right: 12px" styleClass="rounded-button ui-button-outlined" />
+
+                                <p:commandButton icon="pi pi-trash" title="Excluir" process="@this"
+                                                 actionListener="#{pJuridicaC.excluir}" update="tabela"
+                                                 styleClass="rounded-button ui-button-outlined" >
+                                    <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="pi pi-info-circle"/>
+                                </p:commandButton>
+                            </p:column>                       
+
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                        </p:confirmDialog>
+
+                    </h:form>
+                </p:tab>
+
+                <!--aba para cadastrar e alterar-->
+                <p:tab title="Novo">
+                    <h:form id="form_novo">
+                        <p:panelGrid id="painel_" columns="4" layout="flex"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4,
+                                     p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                                     contentStyleClass="p-align-baseline ui-fluid">
+
+                            <p:outputLabel for="nome" value="Nome:" />
+                            <p:inputText id="nome" value="#{pJuridicaC.pessoaJuridica.nome}"
+                                         required="true" requiredMessage="Nome é obrigatório!" />
+
+                            <p:outputLabel for="email" value="E-mail:" />
+                            <p:inputText id="email" value="#{pJuridicaC.pessoaJuridica.email}"
+                                         required="true" requiredMessage="E-mail é obrigatório!" />
+
+                            <p:outputLabel for="cnpj" value="CNPJ:" />
+                            <p:inputMask id="cnpj" value="#{pJuridicaC.pessoaJuridica.cnpj}" mask="99.999.999/9999-99"
+                                         required="true" requiredMessage="CNPJ é obrigatório!" />
+
+                            <p:outputLabel for="ie" value="IE:" />
+                            <p:inputText id="ie" value="#{pJuridicaC.pessoaJuridica.inscricao_estadual}" 
+                                         required="true" requiredMessage="IE é obrigatório!" />
+                            <p:outputLabel value="" />
+                            <p:outputLabel value="" />
+                            <p:outputLabel value="" />
+                            <p:commandButton value="Salvar" actionListener="#{pJuridicaC.salvar()}"
+                                         update="@all" process="@this painel_"  />
+
+                        </p:panelGrid>
+
+                    </h:form>
+                </p:tab>
+
+            </p:tabView>
+        </p:panel> 
+
+    </ui:define>
+
+</ui:composition>

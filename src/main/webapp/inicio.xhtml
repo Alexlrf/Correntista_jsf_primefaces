@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="./layout.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">                        
+            <p:panelGrid id="panelG" columns="3" layout="flex" 
+                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2"
+                         contentStyleClass="ui-fluid">
+                <p:outputLabel  value="" />
+                <b><p:outputLabel id="perfil" value="Conversões" /></b>
+            </p:panelGrid>
+
+            <p:dataTable id="tabela" var="moeda" value="#{moedaC.moedas}" rows="10">
+                <p:column headerText="Moeda">
+                    <h:outputText value="#{moeda.nome}" />
+                </p:column>
+                <p:column headerText="Valor Atual">
+                    <h:outputText value="#{moeda.valorFinal}" />
+                </p:column>   
+                <p:column headerText="Valor Mínimo">
+                    <h:outputText value="#{moeda.valorMinimo}" />
+                </p:column>   
+                <p:column headerText="Valor Máximo">
+                    <h:outputText value="#{moeda.valorMaximo}" />
+                </p:column> 
+            </p:dataTable>
+        </h:form>
+        <style type="text/css">
+            .ui-chart {
+                margin-bottom: 50px;
+            }
+        </style>
+
+        <div class="card">
+            <p:lineChart model="#{graficoBarra.lineModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+</ui:composition>
